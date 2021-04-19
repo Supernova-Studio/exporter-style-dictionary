@@ -7,7 +7,7 @@
     "strictNullChecks": true,
     "typeRoots": [
       // Add Supernova
-      // "./node_modules/@figma"
+      "src"
     ]
   }
 }
