@@ -214,7 +214,53 @@ declare global {
 
   //
   // Data Types
-  // Subcategory: Auxiliary
+  // Subcategory: Groups
+  //
+  type TokenGroup = {
+    id: string
+    name: string
+    description: string
+    path: Array<string>
+    subgroups: Array<TokenGroup>
+    tokenType: TokenType
+    isRoot: boolean
+    childrenIds: Array<string>
+    tokenIds: Array<string>
+  }
+
+  //
+  // Data Types
+  // Subcategory: System
+  //
+
+  type Workspace = {
+    id: string
+    handle: string
+    name: string
+    color: string
+  }
+
+  type DesignSystem = {
+    id: string
+    workspaceId: string
+    name: string
+    description: string
+    isPublic: boolean
+  }
+
+  type DesignSystemVersion = {
+    id: string
+    designSystemId: string
+    name: string
+    description: string
+    version: string
+    changeLog: string | null
+    isReadOnly: boolean
+  }
+
+  //
+  // Data Types
+  // Subcategory: Support
   //
 
   type SourceOrigin = {
