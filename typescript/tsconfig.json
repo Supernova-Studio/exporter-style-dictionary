@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "outDir": "build",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "strictNullChecks": true,
+    "typeRoots": [
+      // Add Supernova
+      // "./node_modules/@figma"
+    ]
+  }
+}
