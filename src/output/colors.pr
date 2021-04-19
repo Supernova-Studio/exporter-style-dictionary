@@ -1,2 +1,14 @@
-{* Export example code goes here *}
-{}
+{* Example Output
+
+{
+    "group-1-name": {
+        "group-2-name": {
+            "token-name": {
+                "type": "color",
+                "value": "#ffffff"
+            }
+        }
+    }
+}
+
+*}

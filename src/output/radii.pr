@@ -1,0 +1,40 @@
+{* Example Output
+
+{
+    "group-1-name": {
+        "group-2-name": {
+            "token-name": {
+                "type": "radius",
+                "value": {
+                    "radius": {
+                        "type": "size",
+                        "value": 10,
+                        "unit": "px"
+                    },
+                    "topLeft": {
+                        "type": "size",
+                        "value": 10,
+                        "unit": "px"
+                    },
+                    "topRight": {
+                        "type": "size",
+                        "value": 10,
+                        "unit": "px"
+                    },
+                    "bottomLeft": {
+                        "type": "size",
+                        "value": 10,
+                        "unit": "px"
+                    },
+                    "bottomRight": {
+                        "type": "size",
+                        "value": 10,
+                        "unit": "px"
+                    }
+                }
+            }
+        }
+    }
+}
+
+*}

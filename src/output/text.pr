@@ -1,0 +1,14 @@
+{* Example Output
+
+{
+    "group-1-name": {
+        "group-2-name": {
+            "token-name": {
+                "type": "text",
+                "value": "Some string"
+            }
+        }
+    }
+}
+
+*}

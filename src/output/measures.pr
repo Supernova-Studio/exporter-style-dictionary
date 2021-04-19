@@ -1,0 +1,23 @@
+{* Example Output
+
+{
+    "group-1-name": {
+        "group-2-name": {
+            "token-name": {
+                "type": "font",
+                "value": {
+                    "family": {
+                        "type": "string",
+                        "value": "lato"
+                    },
+                    "family": {
+                        "type": "string",
+                        "value": "lato"
+                    },
+                }
+            }
+        }
+    }
+}
+
+*}

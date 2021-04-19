@@ -1,0 +1,28 @@
+{* Example Output
+
+{
+    "group-1-name": {
+        "group-2-name": {
+            "token-name": {
+                "type": "border",
+                "value": {
+                    "color": {
+                        "type": "color",
+                        "value": "#ffffff"
+                    },
+                    "width": {
+                        "type": "size",
+                        "value": 1,
+                        "unit": "px"
+                    },
+                    "position": {
+                        "type": "string",
+                        "value": "inside"
+                    } 
+                }
+            }
+        }
+    }
+}
+
+*}
