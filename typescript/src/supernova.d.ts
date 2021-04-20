@@ -3,6 +3,7 @@
 //
 // TypeScript Version: 4.2
 // Supernova Pulsar  Version: 1
+// Note: Only temporary now, before we publish it on defotyped || private package
 
 declare global {
   //
@@ -78,7 +79,7 @@ declare global {
   }
 
   type FontToken = Token & {
-    value: TextTokenValue
+    value: FontTokenValue
   }
 
   //

@@ -9,8 +9,18 @@ Pulsar.registerFunction("objectToPrettyJson", (object: Object) => {
 /** Generate style dictionary tree */
 Pulsar.registerFunction("generateStyleDictionaryTree", (rootGroup: TokenGroup, allTokens: Array<Token>, allGroups: Array<TokenGroup>) => {
   let writeRoot = {}
+  // Compute full data structure of the entire type-dependent tree
   let result = representTree(rootGroup, allTokens, allGroups, writeRoot)
-  return result
+
+  // Add top level entries which don't belong to any user-defined group
+  for (let token of tokensOfGroup(rootGroup, allTokens)) {
+    result[safeTokenName(token)] = representToken(token, allTokens, allGroups)
+  }
+
+  // Retrieve
+  return {
+    [`${typeLabel(rootGroup.tokenType)}`]: result,
+  }
 })
 
 // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -30,7 +40,6 @@ function representTree(rootGroup: TokenGroup, allTokens: Array<Token>, allGroups
     for (let token of tokensOfGroup(group, allTokens)) {
       writeSubObject[safeTokenName(token)] = representToken(token, allTokens, allGroups)
     }
-    rootGroup.tokenIds
   }
 
   return writeObject
@@ -64,7 +73,14 @@ function representToken(token: Token, allTokens: Array<Token>, allGroups: Array<
 }
 
 function representColorToken(token: ColorToken, allTokens: Array<Token>, allGroups: Array<TokenGroup>): Object {
-  let value = token.value.referencedToken ? referenceWrapper(referenceName(token.value.referencedToken, allGroups)) : `#${token.value.hex}`
+  let value: any
+  if (token.value.referencedToken) {
+    // Forms reference
+    value = referenceWrapper(referenceName(token.value.referencedToken, allGroups))
+  } else {
+    // Raw value
+    value = `#${token.value.hex}`
+  }
   return tokenWrapper(token, value)
 }
 
@@ -75,20 +91,50 @@ function representBorderToken(token: BorderToken, allTokens: Array<Token>, allGr
 }
 
 function representFontToken(token: FontToken, allTokens: Array<Token>, allGroups: Array<TokenGroup>): Object {
-  // TODO: Font value
-  let value = ""
+  let value: any
+  if (token.value.referencedToken) {
+    // Forms reference
+    value = referenceWrapper(referenceName(token.value.referencedToken, allGroups))
+  } else {
+    // Raw value
+    value = {
+      family: {
+        type: "string",
+        value: token.value.family,
+      },
+      subfamily: {
+        type: "string",
+        value: token.value.subfamily,
+      },
+    }
+  }
   return tokenWrapper(token, value)
 }
 
 function representGradientToken(token: GradientToken, allTokens: Array<Token>, allGroups: Array<TokenGroup>): Object {
   // TODO: Gradient value
-  let value = ""
+  let value = {}
   return tokenWrapper(token, value)
 }
 
 function representMeasureToken(token: MeasureToken, allTokens: Array<Token>, allGroups: Array<TokenGroup>): Object {
-  // TODO: Measure value
-  let value = ""
+  let value: any
+  if (token.value.referencedToken) {
+    // Forms reference
+    value = referenceWrapper(referenceName(token.value.referencedToken, allGroups))
+  } else {
+    // Raw value
+    value = {
+      measure: {
+        type: "size",
+        value: token.value.measure,
+      },
+      unit: {
+        type: "string",
+        value: token.value.unit.toLowerCase(),
+      },
+    }
+  }
   return tokenWrapper(token, value)
 }
 
@@ -184,7 +230,6 @@ function typeLabel(type: TokenType) {
 
 // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 // MARK: - Lookup
-
 
 function tokensOfGroup(containingGroup: TokenGroup, allTokens: Array<Token>): Array<Token> {
   return allTokens.filter((t) => containingGroup.tokenIds.indexOf(t.id) !== -1)
