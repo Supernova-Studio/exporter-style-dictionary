@@ -18,7 +18,7 @@ module.exports = (env, argv) => ({
   resolve: { extensions: ['.tsx', '.ts', '.jsx', '.js'] },
 
   output: {
-    filename: 'compute.js',
+    filename: 'compiled.js',
     path: path.resolve(__dirname, '../src/js/'),
   },
 })

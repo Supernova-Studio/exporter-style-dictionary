@@ -9,7 +9,7 @@
     "config": {
         "sources": "sources.json",
         "output": "output.json",
-        "js": "src/js/compute.js"
+        "js": "src/js/compiled.js"
     },
     "engines": {
         "pulsar": "1.0.0",
