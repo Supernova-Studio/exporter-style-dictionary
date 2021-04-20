@@ -1,26 +1,25 @@
-/**
- * Format object to pretty JSON
- */
+// --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+// MARK: - Blueprint functions
+
+/** Format object to pretty JSON */
 Pulsar.registerFunction("objectToPrettyJson", (object: Object) => {
-  return JSON.stringify(object, null, 2);
+  return JSON.stringify(object, null, 2)
 })
 
-/**
- * Generate style dictionary tree
- */
+/** Generate style dictionary tree */
 Pulsar.registerFunction("generateStyleDictionaryTree", (rootGroup: TokenGroup, allTokens: Array<Token>, allGroups: Array<TokenGroup>) => {
-
   let writeRoot = {}
   let result = representTree(rootGroup, allTokens, allGroups, writeRoot)
   return result
 })
 
+// --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+// MARK: - Tree construction
 
+/** Construct tree out of one specific group, independent of tree type */
 function representTree(rootGroup: TokenGroup, allTokens: Array<Token>, allGroups: Array<TokenGroup>, writeObject: Object): Object {
-
   // Represent one level of groups and tokens inside tree. Creates subobjects and then also information about each token
   for (let group of rootGroup.subgroups) {
-
     // Write buffer
     let writeSubObject = {}
 
@@ -37,47 +36,161 @@ function representTree(rootGroup: TokenGroup, allTokens: Array<Token>, allGroups
   return writeObject
 }
 
+// --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+// MARK: - Token Representation
 
+/** Represent a singular token as SD object */
 function representToken(token: Token, allTokens: Array<Token>, allGroups: Array<TokenGroup>): Object {
-
   switch (token.tokenType) {
-    case 'Color':
-      return representColorToken(token as ColorToken, allTokens, allGroups) 
+    case "Color":
+      return representColorToken(token as ColorToken, allTokens, allGroups)
+    case "Border":
+      return representBorderToken(token as BorderToken, allTokens, allGroups)
+    case "Font":
+      return representFontToken(token as FontToken, allTokens, allGroups)
+    case "Gradient":
+      return representGradientToken(token as GradientToken, allTokens, allGroups)
+    case "Measure":
+      return representMeasureToken(token as MeasureToken, allTokens, allGroups)
+    case "Radius":
+      return representRadiusToken(token as RadiusToken, allTokens, allGroups)
+    case "Shadow":
+      return representShadowToken(token as ShadowToken, allTokens, allGroups)
+    case "Text":
+      return representTextToken(token as TextToken, allTokens, allGroups)
+    case "Typography":
+      return representTypographyToken(token as TypographyToken, allTokens, allGroups)
   }
-
-  throw Error(`JS: Unsupported token type ${token.tokenType}`)
 }
 
 function representColorToken(token: ColorToken, allTokens: Array<Token>, allGroups: Array<TokenGroup>): Object {
-
-  return {
-    "value": token.value.referencedToken ? referenceWrapper(referenceName(token.value.referencedToken, allGroups)) : `#${token.value.hex}`,
-    "type": "color",
-    "comment": token.description.length > 0 ? token.description : undefined
-  }
+  let value = token.value.referencedToken ? referenceWrapper(referenceName(token.value.referencedToken, allGroups)) : `#${token.value.hex}`
+  return tokenWrapper(token, value)
 }
+
+function representBorderToken(token: BorderToken, allTokens: Array<Token>, allGroups: Array<TokenGroup>): Object {
+  // TODO: Border value
+  let value = ""
+  return tokenWrapper(token, value)
+}
+
+function representFontToken(token: FontToken, allTokens: Array<Token>, allGroups: Array<TokenGroup>): Object {
+  // TODO: Font value
+  let value = ""
+  return tokenWrapper(token, value)
+}
+
+function representGradientToken(token: GradientToken, allTokens: Array<Token>, allGroups: Array<TokenGroup>): Object {
+  // TODO: Gradient value
+  let value = ""
+  return tokenWrapper(token, value)
+}
+
+function representMeasureToken(token: MeasureToken, allTokens: Array<Token>, allGroups: Array<TokenGroup>): Object {
+  // TODO: Measure value
+  let value = ""
+  return tokenWrapper(token, value)
+}
+
+function representRadiusToken(token: RadiusToken, allTokens: Array<Token>, allGroups: Array<TokenGroup>): Object {
+  // TODO: Radius value
+  let value = ""
+  return tokenWrapper(token, value)
+}
+
+function representShadowToken(token: ShadowToken, allTokens: Array<Token>, allGroups: Array<TokenGroup>): Object {
+  // TODO: Shadow value
+  let value = ""
+  return tokenWrapper(token, value)
+}
+
+function representTextToken(token: TextToken, allTokens: Array<Token>, allGroups: Array<TokenGroup>): Object {
+  // TODO: Text value
+  let value = ""
+  return tokenWrapper(token, value)
+}
+
+function representTypographyToken(token: TypographyToken, allTokens: Array<Token>, allGroups: Array<TokenGroup>): Object {
+  // TODO: Typography value
+  let value = ""
+  return tokenWrapper(token, value)
+}
+
+// --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+// MARK: - Object wrappers
 
 function referenceWrapper(reference: string) {
   return `{${reference}.value}`
 }
 
-function referenceName(token: Token, allGroups: Array<TokenGroup>) {
+function tokenWrapper(token: Token, value: any) {
+  return {
+    value: value,
+    type: typeLabel(token.tokenType),
+    comment: token.description.length > 0 ? token.description : undefined,
+  }
+}
 
+// --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+// MARK: - Naming
+
+function referenceName(token: Token, allGroups: Array<TokenGroup>) {
   // Find the group to which token belongs. This is really suboptimal and should be solved by the SDK to just provide the group reference
-  let occurances = allGroups.filter(g => g.tokenIds.indexOf(token.id) !== -1)
+  let occurances = allGroups.filter((g) => g.tokenIds.indexOf(token.id) !== -1)
   if (occurances.length === 0) {
     throw Error("JS: Unable to find token in any of the groups")
   }
   // Create full reference chain name. [g1].[g2].[g3].[g4].[token-name]
   let containingGroup = occurances[0]
   let tokenPart = safeTokenName(token)
-  let groupParts = referenceGroupChain(containingGroup).map(g => safeGroupName(g))
+  let groupParts = referenceGroupChain(containingGroup).map((g) => safeGroupName(g))
   return [...groupParts, tokenPart].join(".")
 }
 
+function safeTokenName(token: Token) {
+  // Replace spaces with dashes, also change anything non-alphanumeric char to it as well.
+  // For example, ST&RK Industries will be changed to st-rk-industries
+  return token.name.replace(/\W+/g, "-").toLowerCase()
+}
+
+function safeGroupName(group: TokenGroup) {
+  // Replace spaces with dashes, also change anything non-alphanumeric char to it as well.
+  // For example, ST&RK Industries will be changed to st-rk-industries
+  return group.name.replace(/\W+/g, "-").toLowerCase()
+}
+
+function typeLabel(type: TokenType) {
+  switch (type) {
+    case "Border":
+      return "border"
+    case "Color":
+      return "color"
+    case "Font":
+      return "font"
+    case "Gradient":
+      return "gradient"
+    case "Measure":
+      return "measure"
+    case "Radius":
+      return "radius"
+    case "Shadow":
+      return "shadow"
+    case "Text":
+      return "text"
+    case "Typography":
+      return "typography"
+  }
+}
+
+// --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+// MARK: - Lookup
+
+
+function tokensOfGroup(containingGroup: TokenGroup, allTokens: Array<Token>): Array<Token> {
+  return allTokens.filter((t) => containingGroup.tokenIds.indexOf(t.id) !== -1)
+}
 
 function referenceGroupChain(containingGroup: TokenGroup): Array<TokenGroup> {
-
   let iteratedGroup = containingGroup
   let chain = [containingGroup]
   while (iteratedGroup.parent) {
@@ -86,26 +199,4 @@ function referenceGroupChain(containingGroup: TokenGroup): Array<TokenGroup> {
   }
 
   return chain.reverse()
-}
-
-
-function tokensOfGroup(containingGroup: TokenGroup, allTokens: Array<Token>): Array<Token> {
-
-  return allTokens.filter(t => containingGroup.tokenIds.indexOf(t.id) !== -1)
-}
-
-
-function safeTokenName(token: Token) {
-
-  // Replace spaces with dashes, also change anything non-alphanumeric char to it as well. 
-  // For example, ST&RK Industries will be changed to st-rk-industries
-  return token.name.replace(/\W+/g, '-').toLowerCase()
-}
-
-
-function safeGroupName(group: TokenGroup) {
-
-  // Replace spaces with dashes, also change anything non-alphanumeric char to it as well. 
-  // For example, ST&RK Industries will be changed to st-rk-industries
-  return group.name.replace(/\W+/g, '-').toLowerCase()
 }

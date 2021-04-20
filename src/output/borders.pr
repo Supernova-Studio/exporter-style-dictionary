@@ -26,3 +26,8 @@
 }
 
 *}
+{[ const allTokens = @ds.allTokens() /]}
+{[ const allGroups = @ds.allTokenGroups() /]}
+{[ const rootGroup = @ds.tokenGroupTreeByType("Border") /]}
+{[ const sdTree = @js.generateStyleDictionaryTree(rootGroup, allTokens, allGroups) /]}
+{{ @js.objectToPrettyJson(sdTree) }}
