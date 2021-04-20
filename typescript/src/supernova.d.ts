@@ -25,54 +25,19 @@ declare global {
   //
   // Enums
   //
-  enum TokenType {
-    color = "Color",
-    typography = "Typography",
-    radius = "Radius",
-    font = "Font",
-    measure = "Measure",
-    shadow = "Shadow",
-    border = "Border",
-    gradient = "Gradient",
-    text = "Text",
-  }
+  type TokenType = 'Color' | 'Typography' | 'Radius' | 'Font' | 'Measure' | 'Shadow' | 'Border' | 'Gradient' | 'Text'
+  
+  type SourceType = 'Supernova' | 'Figma'
 
-  enum SourceType {
-    supernova = "Supernova",
-    figma = "Figma",
-  }
+  type TextCase = 'Original' | 'Upper' | 'Lower' | 'Camel'
 
-  enum TextCase {
-    original = "Original",
-    upper = "Upper",
-    lower = "Lower",
-    camel = "Camel",
-  }
+  type TextDecoration = 'None' | 'Underline' | 'Strikethrough'
 
-  enum TextDecoration {
-    original = "None",
-    underline = "Underline",
-    strikethrough = "Strikethrough",
-  }
+  type Unit = 'Pixels' | 'Points' | 'Percent' | 'Ems'
 
-  enum Unit {
-    pixels = "Pixels",
-    points = "Points",
-    percent = "Percent",
-    ems = "Ems",
-  }
+  type BorderPosition = 'Inside' | 'Center' | 'Outside'
 
-  enum BorderPosition {
-    inside = "Inside",
-    center = "Center",
-    outside = "Outside",
-  }
-
-  enum GradientType {
-    linear = "Linear",
-    radial = "Radial",
-    angular = "Angular",
-  }
+  type GradientType = 'Linear' | 'Radial' | 'Angular'
 
   //
   // Data Types
@@ -226,6 +191,7 @@ declare global {
     isRoot: boolean
     childrenIds: Array<string>
     tokenIds: Array<string>
+    parent: TokenGroup | null
   }
 
   //

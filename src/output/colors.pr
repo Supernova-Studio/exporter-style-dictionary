@@ -13,6 +13,7 @@
 
 *}
 {[ const allTokens = @ds.allTokens() /]}
+{[ const allGroups = @ds.allTokenGroups() /]}
 {[ const rootGroup = @ds.tokenGroupTreeByType("Color") /]}
-{[ const sdTree = @js.generateStyleDictionaryTree(allTokens, rootGroup) /]}
+{[ const sdTree = @js.generateStyleDictionaryTree(rootGroup, allTokens, allGroups) /]}
 {{ @js.objectToPrettyJson(sdTree) }}
