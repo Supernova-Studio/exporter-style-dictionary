@@ -11,7 +11,7 @@
                         "value": "#ffffff"
                     },
                     "width": {
-                        "type": "size",
+                        "type": "measure",
                         "value": 1,
                         "unit": "px"
                     },
