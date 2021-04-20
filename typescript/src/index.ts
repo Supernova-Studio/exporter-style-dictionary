@@ -51,13 +51,14 @@ function representToken(token: Token, allTokens: Array<Token>, allGroups: Array<
 function representColorToken(token: ColorToken, allTokens: Array<Token>, allGroups: Array<TokenGroup>): Object {
 
   return {
-    "value": token.value.referencedToken ? referenceWrapper(referenceName(token, allGroups)) : `#${token.value.hex}`,
-    "type": "color"
+    "value": token.value.referencedToken ? referenceWrapper(referenceName(token.value.referencedToken, allGroups)) : `#${token.value.hex}`,
+    "type": "color",
+    "comment": token.description.length > 0 ? token.description : undefined
   }
 }
 
 function referenceWrapper(reference: string) {
-  return `{${reference}}`
+  return `{${reference}.value}`
 }
 
 function referenceName(token: Token, allGroups: Array<TokenGroup>) {
