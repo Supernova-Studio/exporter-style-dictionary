@@ -6,30 +6,92 @@
 
 # Style Dictionary Exporter
 
-
 The Style Dictionary Exporter allows you to **convert Supernova tokens and styles into style dictionary format**, so you can use them in your pipeline, if you don't want to switch to other exporters provided by Supernova. You can generate Style Dictionary definitions either manually - on demand - using Supernova's [VS Code extension](https://marketplace.visualstudio.com/items?itemName=SupernovaIO.pulsar-vsc-extension), or automate your code delivery pipeline using Supernova [Design Continuous Delivery](https://supernova.io/automated-code-delivery).
 
 
 ## Example Usage
 
-Once you have run the exporter against your design system, you can start using the code in your codebase right away. Here are a few examples of how you can use the output of the Style Dictionary exporter:
+Once you have run the exporter against your design system, you can start using the code in your codebase right away. Exporter creates the following definitions:
 
-### [Example 1]
+- [x] `colors.json` containing all colors tokens
+- [x] `fonts.json` containing all font tokens
+- [x] `gradients.json` containing all gradient tokens
+- [x] `measures.json` containing all measure tokens
+- [x] `radii.json` containin all radius tokens
+- [x] `shadows.json` containing all shadow tokens
+- [x] `text.json` containing all semantic labels
+- [x] `typography.json` containing all typography classes
 
-[Todo description]
-
-```
-[Code]
-```
-
-
-### [Example 2]
-
-[Todo description]
+Each of the `.json` files can be used inside style dictionary. The exporter properly follows the structuring of the tokens inside respective categories, adding groups as nesting inside the definition:
 
 ```
-Code
+{
+  "color": {
+    "ui-elements": {
+      "primary": {
+        "value": "#4589ffff",
+        "type": "color"
+      },
+      "success": {
+        "value": "#00a454ff",
+        "type": "color"
+      },
+      "critical": {
+        "value": "#d23031ff",
+        "type": "color"
+      }
+   }
+}
 ```
+
+In this case, `critical` token was defined inside `Colors` category, in `success` group. Of course, the exporter also properly exports references when you used token aliasing inside Supernova:
+
+```
+
+{
+  "color": {
+    "ui-elements": {
+      "primary": {
+        "value": "#4589ffff",
+        "type": "color"
+      },
+      "primary-copy": {
+        "value": "{color.ui-elements.primary.value}",
+        "type": "color"
+      },
+   }
+}
+```
+
+Finally, if you are tokens using mixins - such as using `measure` tokens inside typography, the exporter draws from those as well and **will properly export all references**, even across different definition trees. This way, everything you defined in Supernova is **always** exported.
+
+### Comments & Descriptions
+
+If you are using token descriptions, the exporter includes them under `comment` key:
+
+```
+{
+  "text": {
+    "welcome-screen": {
+      "sign-in": {
+        "value": "Please Sign In",
+        "type": "text",
+        "comment": "Use this everywhere user creates a new account"
+      },
+      "sign-out": {
+        "value": "Sign Out from the application",
+        "type": "text"
+      },
+      "forgot-password": {
+        "value": "Did you forget your password?",
+        "type": "text"
+      }
+    }
+  }
+}
+```
+
+Multi-line descriptions are also supported, and will be exported with `\n` where newline occurs. If the token doesn't have a description, the `comment` key is not generated.
 
 ## Installing
 
