@@ -21,8 +21,8 @@
 }
 
 *}
-{[ const allTokens = @ds.allTokens() /]}
-{[ const allGroups = @ds.allTokenGroups() /]}
-{[ const rootGroup = @ds.tokenGroupTreeByType("Font") /]}
-{[ const sdTree = @js.generateStyleDictionaryTree(rootGroup, allTokens, allGroups) /]}
-{{ @js.objectToPrettyJson(sdTree) }}
+{[ const allTokens = ds.allTokens() /]}
+{[ const allGroups = ds.allTokenGroups() /]}
+{[ const rootGroup = ds.tokenGroupTreeByType("Font") /]}
+{[ const sdTree = generateStyleDictionaryTree(rootGroup, allTokens, allGroups) /]}
+{{ objectToPrettyJson(sdTree) }}
