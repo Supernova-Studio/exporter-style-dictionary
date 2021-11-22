@@ -5,7 +5,8 @@
     "author": "Jiri Trecak",
     "organization": "Supernova",
     "source_dir": "src",
-    "version": "1.0.1",
+    "version": "1.2",
+    "usesBrands": true,
     "config": {
         "sources": "sources.json",
         "output": "output.json",
