@@ -37,8 +37,9 @@
 }
 
 *}
-{[ const allTokens = ds.allTokens() /]}
-{[ const allGroups = ds.allTokenGroups() /]}
-{[ const rootGroup = ds.tokenGroupTreeByType("Shadow") /]}
+{[ let brand = ds.currentBrand() /]}
+{[ const allTokens = ds.allTokens(brand.id) /]}
+{[ const allGroups = ds.allTokenGroups(brand.id) /]}
+{[ const rootGroup = ds.tokenGroupTreeByType("Shadow", brand.id) /]}
 {[ const sdTree = generateStyleDictionaryTree(rootGroup, allTokens, allGroups) /]}
 {{ objectToPrettyJson(sdTree) }}
