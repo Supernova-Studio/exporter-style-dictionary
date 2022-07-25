@@ -35,6 +35,10 @@
         {
             "invoke": "typography.pr",
             "write_to": "typography.json"
+        },
+        {
+            "invoke": "other.pr",
+            "write_to": "other.json"
         }
     ]
 }

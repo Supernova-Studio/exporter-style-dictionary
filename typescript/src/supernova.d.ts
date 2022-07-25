@@ -26,7 +26,7 @@ declare global {
   //
   // Enums
   //
-  type TokenType = 'Color' | 'Typography' | 'Radius' | 'Font' | 'Measure' | 'Shadow' | 'Border' | 'Gradient' | 'Text'
+  type TokenType = 'Color' | 'Typography' | 'Radius' | 'Font' | 'Measure' | 'Shadow' | 'Border' | 'Gradient' | 'Text' | 'GenericToken';
   
   type SourceType = 'Supernova' | 'Figma'
 
@@ -45,6 +45,10 @@ declare global {
   // Subcategory: Design Token Shells
   //
   type Token = TokenValue & {}
+
+  type GenericToken = Token & {
+    value: GenericTokenValue
+  }
 
   type ColorToken = Token & {
     value: ColorTokenValue
@@ -93,6 +97,11 @@ declare global {
     description: string
     tokenType: TokenType
     origin: SourceOrigin | null
+  }
+
+  type GenericTokenValue = {
+    text: string;
+    referencedToken: GenericToken | null;
   }
 
   type ColorTokenValue = {
