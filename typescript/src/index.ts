@@ -69,7 +69,15 @@ function representToken(token: Token, allTokens: Array<Token>, allGroups: Array<
       return representTextToken(token as TextToken, allTokens, allGroups)
     case "Typography":
       return representTypographyToken(token as TypographyToken, allTokens, allGroups)
+    case "GenericToken":
+      return representGenericToken(token as GenericToken, allTokens, allGroups);
   }
+}
+
+/** Represent generic token, */
+function representGenericToken(token: GenericToken, allTokens: Array<Token>, allGroups: Array<TokenGroup>): Object {
+  let value = representGenericTokenValue(token.value, allTokens, allGroups)
+  return tokenWrapper(token, value)
 }
 
 /** Represent full color token, including wrapping meta-information such as user description */
@@ -128,6 +136,19 @@ function representTypographyToken(token: TypographyToken, allTokens: Array<Token
 
 // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 // MARK: - Token Value Representation
+
+/** Represent generic token value either as reference or as plain representation */
+function representGenericTokenValue(value: GenericTokenValue, allTokens: Array<Token>, allGroups: Array<TokenGroup>): any {
+  let result: any
+  if (value.referencedToken) {
+    // Forms reference
+    result = referenceWrapper(referenceName(value.referencedToken, allGroups))
+  } else {
+    // Raw value
+    result = value.text
+  }
+  return result
+}
 
 /** Represent color token value either as reference or as plain representation */
 function representColorTokenValue(value: ColorTokenValue, allTokens: Array<Token>, allGroups: Array<TokenGroup>): any {
@@ -484,6 +505,8 @@ function typeLabel(type: TokenType) {
       return "text"
     case "Typography":
       return "typography"
+    case "GenericToken":
+      return "generic";
   }
 }
 
