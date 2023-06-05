@@ -1,11 +1,11 @@
 {
-    "id": "io.supernova.style-dictionary",
-    "name": "Style Dictionary",
+    "id": "io.betclic.style-dictionary",
+    "name": "Custom Style Dictionary",
     "description": "Style dictionary definition exporter",
-    "author": "Jiri Trecak",
-    "organization": "Supernova",
+    "author": "Pascal Ferrère",
+    "organization": "Betclic",
     "source_dir": "src",
-    "version": "1.2.1",
+    "version": "1.0.0",
     "usesBrands": true,
     "config": {
         "sources": "sources.json",
