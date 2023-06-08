@@ -427,7 +427,7 @@ function tokenWrapper(token: Token, value: any) {
   return {
     value: value,
     type: typeLabel(token.tokenType),
-    comment: token.description.length > 0 ? token.description : undefined,
+    comment: token.description.length > 0 ? token.description.replace(/\r?\n|\r/g, ' ') : undefined, // Use the description as a comment, but replace line breaks with spaces. Otherwise, the output will be broken until https://github.com/amzn/style-dictionary/pull/953 is fixed
   }
 }
 
