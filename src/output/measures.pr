@@ -5,15 +5,13 @@
         "group-2-name": {
             "token-name": {
                 "type": "font",
-                "value": {
-                    "measure": {
-                        "type": "size",
-                        "value": 12
-                    },
-                    "unit": {
-                        "type": "string",
-                        "value": "px"
-                    }
+                "measure": {
+                    "type": "size",
+                    "value": 12
+                },
+                "unit": {
+                    "type": "string",
+                    "value": "px"
                 }
             }
         }

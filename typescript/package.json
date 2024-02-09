@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "npx webpack --mode=development --watch"
+    "build": "NODE_OPTIONS=--openssl-legacy-provider npx webpack --mode=development",
+    "watch": "NODE_OPTIONS=--openssl-legacy-provider npx webpack --mode=development --watch"
   },
   "author": "Supernova.io",
   "license": "MIT",
-  "dependencies": {},
   "devDependencies": {
     "ts-loader": "^7.0.5",
     "typescript": "^3.9.9",

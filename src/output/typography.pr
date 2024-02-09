@@ -5,44 +5,40 @@
         "group-2-name": {
             "token-name": {
                 "type": "typography",
-                "value": {
-                    "font": {
-                        "type": "font",
-                        "value": {
-                            "family": {
-                                "type": "string",
-                                "value": "lato"
-                            },
-                            "subfamily": {
-                                "type": "string",
-                                "value": "lato"
-                            }
-                        }
-                    },
-                    "font-size": {
-                        "type": "size",
-                        "value": 12
-                    },
-                    "text-decoration": {
+                "font": {
+                    "type": "font",
+                    "family": {
                         "type": "string",
-                        "value": "none"
+                        "value": "lato"
                     },
-                    "text-case": {
+                    "subfamily": {
                         "type": "string",
-                        "value": "lower"
-                    },
-                    "letter-spacing": {
-                        "type": "size",
-                        "value": 0
-                    },
-                    "line-height": {
-                        "type": "size",
-                        "value": 0
-                    },
-                    "paragraphIndent": {
-                        "type": "size",
-                        "value": 0
+                        "value": "lato"
                     }
+                },
+                "font-size": {
+                    "type": "size",
+                    "value": 12
+                },
+                "text-decoration": {
+                    "type": "string",
+                    "value": "none"
+                },
+                "text-case": {
+                    "type": "string",
+                    "value": "lower"
+                },
+                "letter-spacing": {
+                    "type": "size",
+                    "value": 0
+                },
+                "line-height": {
+                    "type": "size",
+                    "value": 0
+                },
+                "paragraphIndent": {
+                    "type": "size",
+                    "value": 0
                 }
             }
         }

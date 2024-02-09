@@ -5,42 +5,40 @@
         "group-2-name": {
             "token-name": {
                 "type": "gradient",
-                "value": {
-                    "gradientType": {
-                        "value": "Linear",
-                        "type": "string"
-                    },
-                    "from": {
-                        "x": {
-                            "type": "size",
-                            "value": 0
-                        },
-                        "y": {
-                            "type": "size",
-                            "value": 0
-                        },
-                    },
-                    "to": {
-                        "x": {
-                            "type": "size",
-                            "value": 0
-                        },
-                        "y": {
-                            "type": "size",
-                            "value": 0
-                        },
-                    },
-                    "aspectRatio": {
+                "gradientType": {
+                    "value": "Linear",
+                    "type": "string"
+                },
+                "from": {
+                    "x": {
                         "type": "size",
-                        "value": 1
+                        "value": 0
                     },
-                    "stops": {
-                        "0": {
-                            "type": "gradientStop",
-                            "color": {
-                                "type": "color",
-                                "value": "#ffffff"
-                            }
+                    "y": {
+                        "type": "size",
+                        "value": 0
+                    },
+                },
+                "to": {
+                    "x": {
+                        "type": "size",
+                        "value": 0
+                    },
+                    "y": {
+                        "type": "size",
+                        "value": 0
+                    },
+                },
+                "aspectRatio": {
+                    "type": "size",
+                    "value": 1
+                },
+                "stops": {
+                    "0": {
+                        "type": "gradientStop",
+                        "color": {
+                            "type": "color",
+                            "value": "#ffffff"
                         }
                     }
                 }

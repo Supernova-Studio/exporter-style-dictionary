@@ -120,6 +120,14 @@ function representTextToken(token: TextToken, allTokens: Array<Token>, allGroups
   return tokenWrapper(token, value)
 }
 
+/** Represent string token */
+function representStringToken(stringValue: string): Object {
+  return {
+    type: "string",
+    value: encodeURIComponent(stringValue) === stringValue ? stringValue : `"${stringValue.replace(/"/g, '\\"')}"`
+  }
+}
+
 /** Represent full typography token, including wrapping meta-information such as user description */
 function representTypographyToken(token: TypographyToken, allTokens: Array<Token>, allGroups: Array<TokenGroup>): Object {
   let value = representTypographyTokenValue(token.value, allTokens, allGroups)
@@ -151,33 +159,18 @@ function representRadiusTokenValue(value: RadiusTokenValue, allTokens: Array<Tok
   } else {
     // Raw value
     result = {
-      radius: {
-        type: "measure",
-        value: representMeasureTokenValue(value.radius, allTokens, allGroups),
-      },
+      radius: representMeasureTokenValue(value.radius, allTokens, allGroups),
       topLeft: value.topLeft
-        ? {
-            type: "measure",
-            value: representMeasureTokenValue(value.topLeft, allTokens, allGroups),
-          }
+        ? representMeasureTokenValue(value.topLeft, allTokens, allGroups)
         : undefined,
       topRight: value.topRight
-        ? {
-            type: "measure",
-            value: representMeasureTokenValue(value.topRight, allTokens, allGroups),
-          }
+        ? representMeasureTokenValue(value.topRight, allTokens, allGroups)
         : undefined,
       bottomLeft: value.bottomLeft
-        ? {
-            type: "measure",
-            value: representMeasureTokenValue(value.bottomLeft, allTokens, allGroups),
-          }
+        ? representMeasureTokenValue(value.bottomLeft, allTokens, allGroups)
         : undefined,
       bottomRight: value.bottomRight
-        ? {
-            type: "measure",
-            value: representMeasureTokenValue(value.bottomRight, allTokens, allGroups),
-          }
+        ? representMeasureTokenValue(value.bottomRight, allTokens, allGroups)
         : undefined,
     }
   }
@@ -193,14 +186,11 @@ function representMeasureTokenValue(value: MeasureTokenValue, allTokens: Array<T
   } else {
     // Raw value
     result = {
-      measure: {
-        type: "size",
-        value: value.measure,
-      },
-      unit: {
-        type: "string",
-        value: value.unit.toLowerCase(),
-      },
+      type: "size",
+      value: value.measure,
+      attributes: {
+        unit: value.unit.toLowerCase()
+      }
     }
   }
   return result
@@ -215,14 +205,10 @@ function representFontTokenValue(value: FontTokenValue, allTokens: Array<Token>,
   } else {
     // Raw value
     result = {
-      family: {
-        type: "string",
-        value: value.family,
-      },
-      subfamily: {
-        type: "string",
-        value: value.subfamily,
-      },
+      family: representStringToken(value.family),
+
+      subfamily: representStringToken(value.subfamily),
+
     }
   }
   return result
@@ -236,7 +222,7 @@ function representTextTokenValue(value: TextTokenValue, allTokens: Array<Token>,
     result = referenceWrapper(referenceName(value.referencedToken, allGroups))
   } else {
     // Raw value
-    result = value.text
+    result = `"${value.text.replace(/"/g, '\\"')}"`
   }
   return result
 }
@@ -250,29 +236,14 @@ function representTypographyTokenValue(value: TypographyTokenValue, allTokens: A
   } else {
     // Raw value
     result = {
-      font: {
-        type: "font",
-        value: representFontTokenValue(value.font, allTokens, allGroups),
-      },
-      fontSize: {
-        type: "measure",
-        value: representMeasureTokenValue(value.fontSize, allTokens, allGroups),
-      },
+      font: representFontTokenValue(value.font, allTokens, allGroups),
+      fontSize: representMeasureTokenValue(value.fontSize, allTokens, allGroups),
       textDecoration: value.textDecoration,
       textCase: value.textCase,
-      letterSpacing: {
-        type: "measure",
-        value: representMeasureTokenValue(value.letterSpacing, allTokens, allGroups),
-      },
-      paragraphIndent: {
-        type: "measure",
-        value: representMeasureTokenValue(value.paragraphIndent, allTokens, allGroups),
-      },
+      letterSpacing: representMeasureTokenValue(value.letterSpacing, allTokens, allGroups),
+      paragraphIndent: representMeasureTokenValue(value.paragraphIndent, allTokens, allGroups),
       lineHeight: value.lineHeight
-        ? {
-            type: "measure",
-            value: representMeasureTokenValue(value.lineHeight, allTokens, allGroups),
-          }
+        ? representMeasureTokenValue(value.lineHeight, allTokens, allGroups)
         : undefined,
     }
   }
@@ -293,14 +264,8 @@ function representBorderTokenValue(value: BorderTokenValue, allTokens: Array<Tok
         type: "color",
         value: representColorTokenValue(value.color, allTokens, allGroups),
       },
-      width: {
-        type: "measure",
-        value: representMeasureTokenValue(value.width, allTokens, allGroups),
-      },
-      position: {
-        type: "string",
-        value: value.position,
-      },
+      width: representMeasureTokenValue(value.width, allTokens, allGroups),
+      position: representStringToken(value.position),
     }
   }
 
@@ -320,22 +285,10 @@ function representShadowTokenValue(value: ShadowTokenValue, allTokens: Array<Tok
         type: "color",
         value: representColorTokenValue(value.color, allTokens, allGroups),
       },
-      x: {
-        type: "measure",
-        value: representMeasureTokenValue(value.x, allTokens, allGroups),
-      },
-      y: {
-        type: "measure",
-        value: representMeasureTokenValue(value.y, allTokens, allGroups),
-      },
-      radius: {
-        type: "measure",
-        value: representMeasureTokenValue(value.radius, allTokens, allGroups),
-      },
-      spread: {
-        type: "measure",
-        value: representMeasureTokenValue(value.spread, allTokens, allGroups),
-      },
+      x: representMeasureTokenValue(value.x, allTokens, allGroups),
+      y: representMeasureTokenValue(value.y, allTokens, allGroups),
+      radius: representMeasureTokenValue(value.radius, allTokens, allGroups),
+      spread: representMeasureTokenValue(value.spread, allTokens, allGroups),
       opacity: {
         type: "size",
         value: value.opacity,
@@ -357,20 +310,17 @@ function representGradientTokenValue(value: GradientTokenValue, allTokens: Array
     result = {
       to: {
         type: "point",
-        value: {
-          x: {
-            type: "size",
-            value: value.to.x,
-          },
-          y: {
-            type: "size",
-            value: value.to.y,
-          },
+        x: {
+          type: "size",
+          value: value.to.x,
+        },
+        y: {
+          type: "size",
+          value: value.to.y,
         },
       },
       from: {
         type: "point",
-        value: {
           x: {
             type: "size",
             value: value.from.x,
@@ -379,12 +329,8 @@ function representGradientTokenValue(value: GradientTokenValue, allTokens: Array
             type: "size",
             value: value.from.y,
           },
-        },
       },
-      type: {
-        type: "string",
-        value: value.type,
-      },
+      gradientType: representStringToken(value.type),
       aspectRatio: {
         type: "size",
         value: value.aspectRatio,
@@ -425,7 +371,7 @@ function referenceWrapper(reference: string) {
 /** Retrieve token wrapper containing its metadata and value information (used as container for each defined token) */
 function tokenWrapper(token: Token, value: any) {
   return {
-    value: value,
+    ...(typeof value === 'object' ? value : { value }),
     type: typeLabel(token.tokenType),
     comment: token.description.length > 0 ? token.description : undefined,
   }

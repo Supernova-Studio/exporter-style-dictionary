@@ -5,16 +5,14 @@
         "group-2-name": {
             "token-name": {
                 "type": "font",
-                "value": {
-                    "family": {
-                        "type": "string",
-                        "value": "lato"
-                    },
-                    "subfamily": {
-                        "type": "string",
-                        "value": "lato"
-                    },
-                }
+                "family": {
+                    "type": "string",
+                    "value": "lato"
+                },
+                "subfamily": {
+                    "type": "string",
+                    "value": "lato"
+                },
             }
         }
     }
