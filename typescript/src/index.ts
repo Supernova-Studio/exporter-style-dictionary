@@ -500,7 +500,8 @@ function typeLabel(type: TokenType) {
 
 /** Find all tokens that belong to a certain group and retrieve them as objects */
 function tokensOfGroup(containingGroup: TokenGroup, allTokens: Array<Token>): Array<Token> {
-  return allTokens.filter((t) => containingGroup.tokenIds.indexOf(t.id) !== -1 && (t as any)?.isVirtual !== true)
+  const isVirtualShadow = (t: Token) => (t as any)?.isVirtual === true && t.tokenType === 'Shadow'
+  return allTokens.filter((t) => containingGroup.tokenIds.indexOf(t.id) !== -1 && !isVirtualShadow(t))
 }
 
 /** Retrieve chain of groups up to a specified group, ordered from parent to children */
