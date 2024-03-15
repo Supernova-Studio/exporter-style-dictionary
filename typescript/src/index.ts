@@ -110,6 +110,14 @@ function representRadiusToken(token: RadiusToken, allTokens: Array<Token>, allGr
 
 /** Represent full shadow token, including wrapping meta-information such as user description */
 function representShadowToken(token: ShadowToken, allTokens: Array<Token>, allGroups: Array<TokenGroup>): Object {
+  const layers: ShadowToken[] = (token as any).shadowLayers;
+  if (layers?.length > 1) {
+    // "shadow-token": { "value": [ {"color": ..}, {..
+    let value = layers.reverse().map((layer) => representShadowTokenValue(layer.value, allTokens, allGroups))
+    // "shadow-token": { "value": { "layer-1": { "color": ..}, "layer-2"..
+    // let value = layers.reverse().reduce((acc, layer, i) => (acc[`layer-${i + 1}`] = representShadowTokenValue(layer.value, allTokens, allGroups), acc), {});
+    return tokenWrapper(token, value)
+  }
   let value = representShadowTokenValue(token.value, allTokens, allGroups)
   return tokenWrapper(token, value)
 }
@@ -157,27 +165,27 @@ function representRadiusTokenValue(value: RadiusTokenValue, allTokens: Array<Tok
       },
       topLeft: value.topLeft
         ? {
-            type: "measure",
-            value: representMeasureTokenValue(value.topLeft, allTokens, allGroups),
-          }
+          type: "measure",
+          value: representMeasureTokenValue(value.topLeft, allTokens, allGroups),
+        }
         : undefined,
       topRight: value.topRight
         ? {
-            type: "measure",
-            value: representMeasureTokenValue(value.topRight, allTokens, allGroups),
-          }
+          type: "measure",
+          value: representMeasureTokenValue(value.topRight, allTokens, allGroups),
+        }
         : undefined,
       bottomLeft: value.bottomLeft
         ? {
-            type: "measure",
-            value: representMeasureTokenValue(value.bottomLeft, allTokens, allGroups),
-          }
+          type: "measure",
+          value: representMeasureTokenValue(value.bottomLeft, allTokens, allGroups),
+        }
         : undefined,
       bottomRight: value.bottomRight
         ? {
-            type: "measure",
-            value: representMeasureTokenValue(value.bottomRight, allTokens, allGroups),
-          }
+          type: "measure",
+          value: representMeasureTokenValue(value.bottomRight, allTokens, allGroups),
+        }
         : undefined,
     }
   }
@@ -270,9 +278,9 @@ function representTypographyTokenValue(value: TypographyTokenValue, allTokens: A
       },
       lineHeight: value.lineHeight
         ? {
-            type: "measure",
-            value: representMeasureTokenValue(value.lineHeight, allTokens, allGroups),
-          }
+          type: "measure",
+          value: representMeasureTokenValue(value.lineHeight, allTokens, allGroups),
+        }
         : undefined,
     }
   }
@@ -492,7 +500,7 @@ function typeLabel(type: TokenType) {
 
 /** Find all tokens that belong to a certain group and retrieve them as objects */
 function tokensOfGroup(containingGroup: TokenGroup, allTokens: Array<Token>): Array<Token> {
-  return allTokens.filter((t) => containingGroup.tokenIds.indexOf(t.id) !== -1)
+  return allTokens.filter((t) => containingGroup.tokenIds.indexOf(t.id) !== -1 && (t as any)?.isVirtual !== true)
 }
 
 /** Retrieve chain of groups up to a specified group, ordered from parent to children */
