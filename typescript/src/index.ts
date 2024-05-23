@@ -17,6 +17,8 @@ Pulsar.registerFunction("generateStyleDictionaryTree", (rootGroup: TokenGroup, a
     result[safeTokenName(token)] = representToken(token, allTokens, allGroups)
   }
 
+  result = unwrapMeasureTokens(result);
+
   // Retrieve
   return {
     [`${typeLabel(rootGroup.tokenType)}`]: result,
@@ -94,6 +96,31 @@ function representFontToken(token: FontToken, allTokens: Array<Token>, allGroups
 function representGradientToken(token: GradientToken, allTokens: Array<Token>, allGroups: Array<TokenGroup>): Object {
   let value = representGradientTokenValue(token.value, allTokens, allGroups)
   return tokenWrapper(token, value)
+}
+
+function unwrapMeasureTokens(result: object) {
+  const groupNames = [
+    "dimension",
+    "opacity",
+    "size",
+    "space",
+    "font-size",
+    "line-height",
+    "letter-spacing",
+    "paragraph-spacing",
+    "border-width",
+    "border-radius",
+    "duration",
+    "z-index"
+  ]
+  for (const groupName of groupNames) {
+    const group = result[groupName]?.[groupName];
+    if (group && !group?.type) {
+      result[groupName] = group;
+    }
+  }
+
+  return result
 }
 
 /** Represent full measure token, including wrapping meta-information such as user description */
